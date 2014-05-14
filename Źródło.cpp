@@ -191,8 +191,6 @@ void wydrukujekran(talia *tablica[12], int x, int y, int nrzaznaczonejKolumny, i
 				cout << "    ";
 				y++;
 			}
-			gotoxy(0, 15);
-			cout << endl << tablica[nrzaznaczonejKolumny]->rozmiar();
 			x = x + 4;
 			y = 0;
 		}
@@ -221,7 +219,7 @@ void przenies(talia *tablica[12], int kolumna1, int nrkarta){		//funkcja przenos
 			wydrukujekran(tablica, 10, 0, kolumna, nrkarta, 1);
 		}
 		if (GetAsyncKeyState(VK_LSHIFT)) {
-			if (tablica[11]->glowa->wartosc + 1 == tablica[kolumna]->ogon->wartosc || kolumna == kolumna1 - 1)
+			if (tablica[11]->glowa->wartosc + 1 == tablica[kolumna]->ogon->wartosc || kolumna == kolumna1)
 			{
 				karta *tmp = tablica[11]->glowa;
 				for (int i = 0; i < tablica[11]->rozmiar(); i++)
@@ -235,7 +233,7 @@ void przenies(talia *tablica[12], int kolumna1, int nrkarta){		//funkcja przenos
 				break;
 			}
 			else {
-				gotoxy(0, 16);
+				gotoxy(0, 15);
 				cout << "Nie można ustwić kart w tym miejscu";
 				kolumna++; wydrukujekran(tablica, 10, 0, kolumna, nrkarta, 1);
 			}
@@ -250,6 +248,7 @@ void przenies(talia *tablica[12], int kolumna1, int nrkarta){		//funkcja przenos
 void steruj(talia *tablica[12], int x, int y){	//funkcja sterująca zaznaczeniem, wczytująca naciskane klawisze
 	int kolumna = 0;
 	int tmpkolumna = 0;
+	int rozdanie = 0;
 	int nrkarta = tablica[0]->rozmiar();
 	bool zaznaczenie = 0;
 	wydrukujekran(tablica, 10, 0, kolumna, nrkarta, zaznaczenie);
@@ -272,15 +271,20 @@ void steruj(talia *tablica[12], int x, int y){	//funkcja sterująca zaznaczeniem
 		}
 		if (GetAsyncKeyState(VK_UP)) { nrkarta--; wydrukujekran(tablica, 10, 0, kolumna, nrkarta, zaznaczenie); }
 		if (GetAsyncKeyState(VK_SPACE)) {
-			rozdajPoKarcie(tablica); wydrukujekran(tablica, 10, 0, kolumna, nrkarta, zaznaczenie);
-		}
+			rozdanie++;
+			if (rozdanie < 6)
+			{
+				rozdajPoKarcie(tablica); wydrukujekran(tablica, 10, 0, kolumna, nrkarta, zaznaczenie);
+			}
+			else
+			{
+				gotoxy(50, 1);
+				cout << "Wykorzystales wszystkie rozdania";
+			}
+			}
 		if (GetAsyncKeyState(VK_LCONTROL)) {
 			zaznaczenie = tablica[kolumna]->sprawdzZaznaczenie(tablica[kolumna]->rozmiar() - nrkarta);
 			tmpkolumna = kolumna;
-			wydrukujekran(tablica, 10, 0, kolumna, nrkarta, zaznaczenie);
-		}
-		if (GetAsyncKeyState(VK_RCONTROL)) {
-			tablica[1]->usun(2, tablica, 1);
 			wydrukujekran(tablica, 10, 0, kolumna, nrkarta, zaznaczenie);
 		}
 		if (nrkarta < 1) nrkarta = 1;
