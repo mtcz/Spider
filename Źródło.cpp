@@ -112,24 +112,24 @@ public:
 	}
 	void sprawdzcalosc(talia *tablica[12], int kolumna, int nrkarta){		//funkcja sprawdzająca czy można usunąć dany ciąg od Króla do Asa
 		karta *tmp = tablica[kolumna]->glowa;
-		int x = 0;
-		for (int i = 0; i < nrkarta; i++)
-		{
-			tmp = tmp->next;
-		}
+		int x = 20;
 		while (tmp != nullptr)
 		{
+			if (tmp->wartosc==13)
+			{
+				x = 0;
+			}
+			tmp = tmp->next;
 			x++;
 		}
 		if (x == 13)
 		{
-			//	tablica[kolumna]->usun(13, tablica, kolumna);	//wymaga dopracowania bo program sie wysypuje
+			tablica[kolumna]->usun(14, tablica, kolumna);
 		}
-		gotoxy(0, 17);
-		cout << "x: " << x;
 	}
 };
 void wydrukujekran(talia *tablica[12], int x, int y, int nrzaznaczonejKolumny, int nrkarty, int zaznaczenie){		//funkcja wyświetlająca całą grę na ekranie
+	
 	for (int i = 0; i < 10; i++)
 	{
 		textcolor(15);
@@ -178,7 +178,7 @@ void wydrukujekran(talia *tablica[12], int x, int y, int nrzaznaczonejKolumny, i
 					}
 					if (karta->wartosc == 13)
 					{
-						//tablica[nrzaznaczonejKolumny]->sprawdzcalosc(tablica, nrzaznaczonejKolumny, nrkarty); 
+						tablica[i]->sprawdzcalosc(tablica, i, nrkarty); 
 					}
 				}
 				else cout << "###\t";
@@ -219,7 +219,7 @@ void przenies(talia *tablica[12], int kolumna1, int nrkarta){		//funkcja przenos
 			wydrukujekran(tablica, 10, 0, kolumna, nrkarta, 1);
 		}
 		if (GetAsyncKeyState(VK_LSHIFT)) {
-			if (tablica[11]->glowa->wartosc + 1 == tablica[kolumna]->ogon->wartosc || kolumna == kolumna1)
+			if (tablica[11]->glowa->wartosc + 1 == tablica[kolumna]->ogon->wartosc || kolumna == kolumna1 ||tablica[kolumna]->glowa==nullptr)
 			{
 				karta *tmp = tablica[11]->glowa;
 				for (int i = 0; i < tablica[11]->rozmiar(); i++)
@@ -233,8 +233,8 @@ void przenies(talia *tablica[12], int kolumna1, int nrkarta){		//funkcja przenos
 				break;
 			}
 			else {
-				gotoxy(0, 15);
-				cout << "Nie można ustwić kart w tym miejscu";
+				gotoxy(50, 3);
+				cout << "Nie mozna ustwic kart w tym miejscu";
 				kolumna++; wydrukujekran(tablica, 10, 0, kolumna, nrkarta, 1);
 			}
 		}
@@ -302,7 +302,7 @@ void steruj(talia *tablica[12], int x, int y){	//funkcja sterująca zaznaczeniem
 				tablica[11]->dodaj(tmp->wartosc, tmp->kolor, 1); //dodaje po jednej karcie do talii przenoszonych
 				tmp = tmp->next;
 			}
-			cout << "                  ";
+			cout << "        ";
 			kolumna++;
 			przenies(tablica, kolumna, nrkarta);
 			wydrukujekran(tablica, 10, 0, kolumna, nrkarta, zaznaczenie);
