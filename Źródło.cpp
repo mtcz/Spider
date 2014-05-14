@@ -4,7 +4,8 @@
 #include <cstdlib>
 #include <windows.h>
 #include <stdio.h>
-#include <athio.h>				//Biblioteka stworzona przez: Adam Małek
+#include <athio.h>		//Biblioteka stworzona przez: Adam Małek
+#include <string>
 using namespace std;
 class karta						//klasa karta posiadająca właśniwości
 {
@@ -133,6 +134,7 @@ void wydrukujekran(talia *tablica[12], int x, int y, int nrzaznaczonejKolumny, i
 	{
 		textcolor(15);
 		int j = 0;
+		string war;
 		karta *karta = tablica[i]->glowa;
 		if (karta == nullptr)
 		{
@@ -148,13 +150,29 @@ void wydrukujekran(talia *tablica[12], int x, int y, int nrzaznaczonejKolumny, i
 				if (i == nrzaznaczonejKolumny && j == nrkarty && zaznaczenie == 0) textcolor(5);
 				else if (i == nrzaznaczonejKolumny && j == nrkarty) textcolor(11);
 				gotoxy(x, y);
+				switch (karta->wartosc)
+				{
+				case 1: war = "As"; break;
+				case 2: war = "2"; break;
+				case 3: war = "3"; break;
+				case 4: war = "4"; break;
+				case 5: war = "5"; break;
+				case 6: war = "6"; break;
+				case 7: war = "7"; break;
+				case 8: war = "8"; break;
+				case 9: war = "9"; break;
+				case 10: war = "10"; break;
+				case 11: war = "J"; break;
+				case 12: war = "Q"; break;
+				case 13: war = "K"; break;
+				}
 				if (karta->widocznosc == true){
 					switch (karta->kolor)
 					{
-					case 3: cout << (char)karta->kolor << karta->wartosc << '\t'; break;
-					case 4: cout << (char)karta->kolor << karta->wartosc << '\t'; break;
-					case 5: cout << (char)karta->kolor << karta->wartosc << '\t'; break;
-					case 6: cout << (char)karta->kolor << karta->wartosc << '\t'; break;
+					case 3: cout << (char)karta->kolor << war << '\t'; break;
+					case 4: cout << (char)karta->kolor << war << '\t'; break;
+					case 5: cout << (char)karta->kolor << war << '\t'; break;
+					case 6: cout << (char)karta->kolor << war << '\t'; break;
 					default:
 						break;
 					}
